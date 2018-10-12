@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block container %}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="page-title">
+            {{ content }}
+        </div>
+        <div class="page-sub-header">
+            欢迎访问教学资源管理平台 <i class="fa fa-map-marker text-danger"></i> 青岛
+        </div>
+    </div>
+</div>
+{% include 'main/m-top-mds.html' %}
+{% include 'main/block-col-lg-1.html' %}
+{% endblock %}
+ {% block myFooterJSCSS %} 
+{{ super() }}
+    <script src="/static/js/xsk/echarts.min.js"></script>
+     <script>
+     var echarts_data_pie_items = {{ echarts_data.lengend | safe }}
+     var echarts_data_pie_items_data  = {{ echarts_data.items_data | safe }}
+     </script>
+     <script type="text/javascript" src="/static/js/xsk/main.js"></script>
+ {% endblock %}

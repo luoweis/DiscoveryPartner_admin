@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% block myheadJSCSS %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css">
+    <link href="/static/css/simplify.min.css" rel="stylesheet">
+    {% endblock %}
+</head>
+
+<body class="overflow-hidden">
+    <div class="wrapper preload">
+        <header class="top-nav">
+            <div class="top-nav-inner">
+                <div class="nav-header">
+                    <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleSM">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="{{ url_for('mainBP.main') }}" class="brand">
+                            <i class="fa fa-database"></i><span class="brand-name">管理平台</span>
+                     </a>
+                </div>
+                <div class="nav-container">
+                    <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleLG">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <ul class="nav-notification">
+                        <li class="search-list">
+                            <div class="search-input-wrapper">
+                                <div class="search-input">
+                                    <input type="text" class="form-control input-sm inline-block">
+                                    <a href="#" class="input-icon text-normal"><i class="ion-ios7-search-strong"></i></a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="pull-right m-right-sm">
+                        <div class="user-block hidden-xs">
+                            <a href="#" id="userToggle" data-toggle="dropdown">
+                                    <img src="/static/images/runner.png" alt="" class="img-circle inline-block user-profile-pic">
+                                    <div class="user-detail inline-block">
+                                        {% if current_user.is_authenticated %}
+                                          {{ current_user.nickname }}
+                                        {% endif %}
+                                        <i class="fa fa-angle-down"></i>
+                                    </div>
+                                </a>
+                            <div class="panel border dropdown-menu user-panel">
+                                <div class="panel-body paddingTB-sm">
+                                    <ul>
+                                        <li>
+                                            <a href="{{ url_for('authBP.logout') }}">
+                                                    <i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">Sign out</span>
+                                                </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ./top-nav-inner -->
+        </header>
+        <aside class="sidebar-menu fixed">
+            <div class="sidebar-inner scrollable-sidebar">
+                <div class="main-menu">
+                    <ul class="accordion">
+                        <li class="menu-header">
+                            Main Menu
+                        </li>
+                        <li class="bg-palette1">
+                            <a href="{{ url_for('mainBP.main') }}">
+                                    <span class="menu-content block">
+                                        <span class="menu-icon"><i class="block fa fa-home fa-lg"></i></span>
+                                        <span class="text m-left-sm">首页</span>
+                                    </span>
+                                    <span class="menu-content-hover block">
+                                        Home
+                                    </span>
+                                </a>
+                        </li>
+                        <li class="openable bg-palette3">
+                            <a href="#">
+                                    <span class="menu-content block">
+                                        <span class="menu-icon"><i class="block fa fa-list fa-lg"></i></span>
+                                        <span class="text m-left-sm">课程师资管理</span>
+                                        <span class="submenu-icon"></span>
+                                    </span>
+                                    <span class="menu-content-hover block">
+                                        课程师资
+                                    </span>
+                                </a>
+                            <ul class="submenu bg-palette4">
+                                <li><a href="{{ url_for('teachingBP.students') }}"><span class="submenu-label">学生</span></a></li>
+                                <li><a href="#"><span class="submenu-label">讲师</span></a></li>
+                                <li><a href="#"><span class="submenu-label">课程</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- sidebar-inner -->
+        </aside>
+        <div class="main-container">
+            <div class="padding-md">
+                {% block container %}
+
+                {% endblock %}
+            </div>
+            <!-- ./padding-md -->
+        </div>
+        <!-- /main-container -->
+    </div>
+    <!-- /wrapper -->
+    <a href="#" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+    {% block myFooterJSCSS %}
+    <script src="/static/js/jquery-1.11.1.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src='/static/js/jquery.slimscroll.min.js'></script>
+    <script src='/static/js/jquery.popupoverlay.min.js'></script>
+    <script src='/static/js/modernizr.min.js'></script>
+    <script src="/static/js/simplify/simplify.js"></script>
+    {% endblock %}
+</body>
+</html>
