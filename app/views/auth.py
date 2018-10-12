@@ -3,15 +3,14 @@
 from flask import render_template, request, flash, redirect, url_for
 from app.bpurls import authBP
 from app.forms.login import LoginForm
-from app.common.xsk_mysql_student_utils import *
-from app.common.util import *
+from app.models.Users import DiscoveryPartnerUsers
 from flask_login import login_user, login_required, logout_user
 from app import login_manager
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return XskUsers.query.get(int(user_id))
+    return DiscoveryPartnerUsers.query.get(int(user_id))
 
 
 @authBP.before_request
@@ -26,7 +25,7 @@ def login():
         if not form.validate_on_submit():
             # print(form.errors)
             return render_template("auth/signin.html", form=form)
-        user = XskUsers.query.filter(XskUsers.username == form.username.data).first()
+        user = DiscoveryPartnerUsers.query.filter(DiscoveryPartnerUsers.username == form.username.data).first()
         if not user:
             flash("该用户不存在", "error")
         else:

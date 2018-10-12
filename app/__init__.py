@@ -18,6 +18,7 @@ login_manager.login_view = "authBP.login"
 login_manager.login_message = '请登录以访问此页面'
 login_manager.init_app(app)
 
+# 数据库的相关信息
 """
 username: 用户名
 pwd: 密码
@@ -25,28 +26,25 @@ addr: 地址
 port：端口号
 dbname：数据库的名称
 """
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://username:pwd@addr:port/dbname'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:luoweis123456@127.0.0.1:3306/DEVOPS2'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:luoweis123456@127.0.0.1:13306/DiscoveryPartnerAdmin'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_ECHO'] = False
 db = SQLAlchemy(app, use_native_unicode='utf8')
 
 
-from app.views import auth, apis, main, teaching
+from app.views import auth,  main
 # 注册蓝本模块
 # 验证登陆的模块
 from app.bpurls import authBP
 app.register_blueprint(authBP)
 # 接口模块
-from app.bpurls import apisBP
-app.register_blueprint(apisBP)
+# from app.bpurls import apisBP
+# app.register_blueprint(apisBP)
 # 首页模块
 from app.bpurls import mainBP
 app.register_blueprint(mainBP)
 
-# 教学资源模块
-from app.bpurls import teachingBP
-app.register_blueprint(teachingBP)
 
 # 初始化数据库创建表
 def db_init():

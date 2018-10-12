@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
 from app.models.XSK import *
-from app.models.Users import *
 from app import db
 import json
 

@@ -3,9 +3,6 @@
 from flask import render_template
 from app.bpurls import mainBP
 from flask_login import login_required
-from app.models.XSK import *
-from app.common.util import *
-from collections import Counter
 
 
 @mainBP.route('/', methods=['GET'])
@@ -40,16 +37,15 @@ def main():
 
     ]
 
-    """ 从数据库中提取数据 """
 
-    student_1 = XSKStudent.query.filter_by(student_sex="1").count()
-    student_0 = XSKStudent.query.filter_by(student_sex="0").count()
+    student_1 = 60
+    student_0 = 40
 
     echarts_data = {
-        "lengend": ['男','女',],
+        "lengend": ['男', '女',],
         "items_data": [
-                {"value":student_0, "name":'男'},
-                {"value":student_1, "name":'女'},
+                {"value": student_0, "name": '男'},
+                {"value": student_1, "name": '女'},
             ]
     }
     context["echarts_data"] = echarts_data

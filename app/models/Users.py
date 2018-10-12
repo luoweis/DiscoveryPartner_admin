@@ -6,9 +6,9 @@ from app import db
 from flask_login import UserMixin
 
 
-class XskUsers(db.Model, UserMixin):
+class DiscoveryPartnerUsers(db.Model, UserMixin):
     # define table name
-    __tablename__ = 'xsk_users'
+    __tablename__ = 'discovery_partner'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
@@ -19,7 +19,7 @@ class XskUsers(db.Model, UserMixin):
     update_datetime = db.Column(db.DateTime, nullable=False,server_default=db.text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"), doc="更新时间")
 
     def __init__(self, **kwargs):
-        super(XskUsers, self).__init__(**kwargs)
+        super(DiscoveryPartnerUsers, self).__init__(**kwargs)
 
     def is_authenticated(self):
         return True
