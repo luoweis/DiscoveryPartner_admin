@@ -1,0 +1,116 @@
+
+{% extends "base.html" %} 
+{% block myheadJSCSS %}
+{{ super() }}
+<!-- bootstrap table -->
+<link rel="stylesheet" href="/static/bootstrap-table/src/bootstrap-table.css">
+{% endblock %}
+
+{% block container %}
+<h2>{{ content }}</h2>
+<div>
+	<!-- 工具容器 -->
+	<div id="toolbar" class="btn-group">
+		<button id="project_choices" class="btn btn-default"  >选择</button>
+		<button id="btn_add" class="btn btn-default" data-toggle="modal"  data-target="#addProjectModal">新增</button>
+	</div>
+	<table id="projects_table" class="col-xs-12"></table>
+</div>
+
+<!-- 模态框示例（Modal）新增 -->
+<form method="post" action="{{ url_for("projectsBP.project_add") }}" class="form-horizontal" role="form" id="form_data"  style="margin: 20px;">
+
+<div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    信息添加
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+
+                        <div class="col-sm-9">
+                            {{ form.project_name(size=80,placeholder="输入项目名称", class="form-control") }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-sm-9">
+                            {{ form.project_info(size=200,class="form-control") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    提交
+                </button><span id="tip"> </span>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</form>
+
+<!-- 模态框示例（Modal）修改 -->
+<form method="post" action="{{ url_for("projectsBP.project_modify") }}" class="form-horizontal" role="form" id="form_data"  style="margin: 20px;">
+
+<div class="modal fade" id="ModifyProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" id="changeProject">
+                    项目信息修改
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+
+                        <div class="col-sm-9">
+                            {{ form.project_name(size=80,placeholder="输入项目名称", class="form-control", id="m_project_name") }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-sm-9">
+                            {{ form.project_info(size=200,class="form-control", id="project_info") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    提交
+                </button><span id="tip2"> </span>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</form>
+{% endblock %}
+
+
+{% block myFooterJSCSS %}
+{{ super() }}
+<!-- bootstrap table -->
+<script src="/static/bootstrap-table/src/bootstrap-table.js"></script>
+<script src="/static/bootstrap-table/src/locale/bootstrap-table-zh-CN.js"></script>
+<script src="/static/js/projectsInfo/table.projects.js"></script>
+{% endblock %}

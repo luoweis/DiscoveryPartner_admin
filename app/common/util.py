@@ -4,9 +4,15 @@ from flask import jsonify
 from app.common.code import Code
 import json
 import datetime
-
+import hashlib
 
 def return_result(data=None, code=Code.SUCCESS):
+    """
+    api接口返回消息格式
+    :param data:
+    :param code:
+    :return:
+    """
     return jsonify({
         "code": code,
         "data": data,
@@ -15,6 +21,11 @@ def return_result(data=None, code=Code.SUCCESS):
 
 
 def get_sex(num):
+    """
+    获取性别
+    :param num:
+    :return:
+    """
     sex = '-'
     if num == 0:
         sex = "男"
@@ -33,3 +44,16 @@ class DateEncoder(json.JSONEncoder):
             return obj.strftime('%Y-%m-%d')
         else:
             return json.JSONEncoder.default(self, obj)
+
+
+def do_encryption(word, t='md5'):
+    """
+    对内容进行加密操作，默认为md5加密的方式
+    :param word:
+    :param t:
+    :return:
+    """
+    if isinstance(word, bytes):
+        return hashlib.new(t, word).hexdigest()
+    elif isinstance(word, str):
+        return hashlib.new(t, word.encode(encoding="utf-8")).hexdigest()

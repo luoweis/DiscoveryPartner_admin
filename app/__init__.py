@@ -4,8 +4,15 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from datetime import timedelta
 
 app = Flask(__name__)
+
+# 设置静态文件缓存
+# 开发阶段使用，切记正式环境需要注释掉
+app.config["DEBUG"] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
+
 
 '''优化前端返回中文数据进行正常显示,用于flask restful api接口开发使用'''
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
@@ -33,7 +40,7 @@ app.config['SQLALCHEMY_ECHO'] = False
 db = SQLAlchemy(app, use_native_unicode='utf8')
 
 
-from app.views import auth,  main
+from app.views import auth,  main, projects
 # 注册蓝本模块
 # 验证登陆的模块
 from app.bpurls import authBP
@@ -41,10 +48,14 @@ app.register_blueprint(authBP)
 # 接口模块
 # from app.bpurls import apisBP
 # app.register_blueprint(apisBP)
+
 # 首页模块
 from app.bpurls import mainBP
 app.register_blueprint(mainBP)
 
+# projects项目模块
+from app.bpurls import projectsBP
+app.register_blueprint(projectsBP)
 
 # 初始化数据库创建表
 def db_init():

@@ -4,6 +4,7 @@ Discovery Partner admin
 人以类聚、物以群分
 
 ## 数据库
+本地测试环境mysql数据库通过docker进行快速创建
 ```bash
 
 docker run -d \

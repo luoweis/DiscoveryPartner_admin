@@ -4,7 +4,6 @@ from flask import render_template, redirect, url_for, request
 from app.bpurls import teachingBP
 from app.common.xsk_mysql_student_utils import *
 from app.common.util import *
-from flask import request
 from flask_login import login_required
 from app.forms.students_add import StudentAddForm
 

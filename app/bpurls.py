@@ -15,6 +15,11 @@ mainBP = Blueprint(
     'mainBP', __name__, url_prefix='/',
     template_folder=os.path.join(os.path.dirname(__file__), "templates/main"))
 
+# projects 内容蓝本
+projectsBP = Blueprint(
+    "projectsBP", __name__, url_prefix="/projects",
+    template_folder=os.path.join(os.path.dirname(__file__), "templates/projectManagement")
+)
 # # 教学资源内容的蓝本
 # teachingBP = Blueprint(
 #     'teachingBP', __name__, url_prefix='/resources/',
@@ -30,3 +35,4 @@ mainBP = Blueprint(
 #
 # resource.add_resource(WebhookXSK, "/webhook/xsk/v1.0/")
 # resource.add_resource(WebhookDevopsAdmin01, "/webhook/devopsAdmin01/v1.0/")
+

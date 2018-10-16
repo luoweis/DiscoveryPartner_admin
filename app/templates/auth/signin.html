@@ -18,13 +18,12 @@
 			<div class="sign-in-wrapper">
 				<div class="sign-in-inner">
 					<div class="login-brand text-center">
-						<i class="fa fa-database m-right-xs"></i> XSK <strong class="text-skin">管理平台</strong>
+						<i class="fa fa-database m-right-xs"></i> Discovery <strong class="text-skin">同道中人</strong>
 					</div>
-					
 					{% with errors = get_flashed_messages(category_filter=["error"]) %}
 						{% if errors %}
 						    {% for msg in errors %}
-						    	<a style="color:red;">{{ msg }}</a>
+						    	<p style="text-align:center;"><a style="color:red;">{{ msg }}</a></p>
 						    {% endfor %}
 						{% endif %}
 					{% endwith %}
@@ -39,7 +38,7 @@
 						</div>
 
 						<div class="m-top-md p-top-sm">
-							<input type="submit" value="登陆" class="btn btn-success block form-control ">
+							<input type="submit" value="登 陆" class="btn btn-success block form-control ">
 						</div>
 						<!--
 						<div class="m-top-md p-top-sm">

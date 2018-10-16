@@ -6,6 +6,7 @@ from app.forms.login import LoginForm
 from app.models.Users import DiscoveryPartnerUsers
 from flask_login import login_user, login_required, logout_user
 from app import login_manager
+from app.common.util import do_encryption
 
 
 @login_manager.user_loader
@@ -29,7 +30,8 @@ def login():
         if not user:
             flash("该用户不存在", "error")
         else:
-            if user.password != form.password.data:
+            # 密文
+            if user.password != do_encryption(form.password.data):
                 flash("用户密码错误", "error")
             else:
                 login_user(user)
