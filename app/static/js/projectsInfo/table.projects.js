@@ -35,23 +35,42 @@ $("#projects_table").bootstrapTable({ // 对应table标签的id
             align: 'center',
             valign: 'middle',
             formatter: function (value,row, index) {
-
-                return '<a class="" data-toggle="modal"  data-target="#ModifyProjectModal" style="color:red;" onclick="change_value(\'' + value + '\')">'+value+'</a>';
-
+                var id = row.project_id
+                return '<a class="" data-toggle="modal"  data-target="#ModifyProjectModal" style="color:red;" onclick="change_value(\'' + id + '\')">'+value+'</a>';
             }
-        },
-        {
+        }, {
+            field: 'project_client',
+            title: '客户信息',
+            align: 'center',
+            valign: 'middle'
+        },{
+            field: 'project_members',
+            title: '项目成员',
+            align: 'center',
+            valign: 'middle'
+        },{
             field: 'project_info',
             title: '备注',
             align: 'center',
             valign: 'middle'
-        },
-        {
+        }, {
             field: 'project_create',
             title: '创建时间',
             align: 'center',
-            valign: 'middle'
-        },
+            valign: 'middle',
+            formatter: function (value, row, index) {
+                return moment(value).utcOffset(16*60).format('YYYY-MM-DD HH:mm:ss ')
+            }
+        },{
+            field: '',
+            title: '修改',
+            align: 'center',
+            valign: 'middle',
+            formatter: function (value,row, index) {
+                var id = row.project_id;
+                return '<a class="" data-toggle="modal"  data-target="#ModifyProjectModal" style="color:red;" onclick="change_value(\'' + id + '\')">变更信息</a>';
+            }
+        }
         // {
         //     field: 'calcMode',
         //     title: '计算方式',
@@ -92,7 +111,25 @@ $("#projects_table").bootstrapTable({ // 对应table标签的id
 
 function change_value(value){
     console.log(value);
-    $("#m_project_name").attr("value", value)
+    // $("#m_project_name").attr("value", value)
+    $.ajax({
+        type:"POST",
+        url:"/projects/get/project/",
+        contentType: "application/json; charset=utf-8",
+        dataType:"json",
+        data: JSON.stringify({
+            "project_id": value,
+        }),
+        success: function (data) {
+            // console.log(data)
+            $("#m_project_id").attr("value", data.project_id);
+            $("#m_project_name").attr("value", data.project_name);
+            $("#m_project_status").attr("value", data.project_status);
+            $("#m_project_client").attr("value", data.project_client);
+            $("#m_project_members").attr("value", data.project_members);
+            $("#m_project_info").val(data.project_info);
+        }
+    })
 }
 
 
@@ -100,11 +137,36 @@ function change_value(value){
 var $table = $('#projects_table'),
     $choices = $('#project_choices');
 
+
 $(function () {
     $choices.click(function () {
         alert('getSelections: ' + JSON.stringify($table.bootstrapTable('getSelections')));
     });
 });
+
+// $(function () {
+//     $("#project_delete").click(function () {
+//         // alert('getSelections: ' + JSON.stringify($table.bootstrapTable('getSelections')));
+//         var projects_info = $table.bootstrapTable('getSelections');
+//         if (projects_info.length == 0){
+//             return false
+//         } else {
+//         //    开始删除选定的项目
+//             $.ajax({
+//                 type: "POST",
+//                 url: "/projects/delete/projects/",
+//                 contentType: "application/json; charset=utf-8",
+//                 dataType: "json",
+//                 data: JSON.stringify({
+//                     "delete_projects": JSON.stringify(projects_info),
+//                 }),
+//                 success: function (data) {
+//                     console.log(data);
+//                 }
+//             })
+//         }
+//     });
+// });
 
 
 

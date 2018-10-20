@@ -4,15 +4,27 @@
 {{ super() }}
 <!-- bootstrap table -->
 <link rel="stylesheet" href="/static/bootstrap-table/src/bootstrap-table.css">
+
 {% endblock %}
 
 {% block container %}
-<h2>{{ content }}</h2>
+<div>
+    {% with deletes = get_flashed_messages(category_filter=["project_delete"]) %}
+        {% if deletes %}
+            {% for msg in deletes %}
+                <p style="text-align:center;"><a style="color:red;">{{ msg }}</a></p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div id='log'></div>
 <div>
 	<!-- 工具容器 -->
 	<div id="toolbar" class="btn-group">
-		<button id="project_choices" class="btn btn-default"  >选择</button>
+		<button id="project_choices" class="btn btn-default">选择</button>
 		<button id="btn_add" class="btn btn-default" data-toggle="modal"  data-target="#addProjectModal">新增</button>
+        <button id="project_delete" class="btn btn-default">删除</button>
 	</div>
 	<table id="projects_table" class="col-xs-12"></table>
 </div>
@@ -35,16 +47,29 @@
                 <form class="form-horizontal" role="form">
                     {{ form.csrf_token }}
                     <div class="form-group">
-
                         <div class="col-sm-9">
                             {{ form.project_name(size=80,placeholder="输入项目名称", class="form-control") }}
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            {{ form.project_status(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            {{ form.project_client(size=80,placeholder="输入项目客户",class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            {{ form.project_members(size=80,placeholder="选择项目成员",class="form-control") }}
+                        </div>
+                    </div>
                     <div class="form-group">
 
                         <div class="col-sm-9">
-                            {{ form.project_info(size=200,class="form-control") }}
+                            {{ form.project_info(size=200,class="form-control", placeholder="项目描述") }}
                         </div>
                     </div>
                 </form>
@@ -79,16 +104,34 @@
                 <form class="form-horizontal" role="form">
                     {{ form.csrf_token }}
                     <div class="form-group">
-
+                        <div class="col-sm-9">
+                            {{ form.project_ID(size=80,placeholder="", class="form-control", id="m_project_id", type="hidden") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-sm-9">
                             {{ form.project_name(size=80,placeholder="输入项目名称", class="form-control", id="m_project_name") }}
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            {{ form.project_status(class="form-control", id="m_project_status") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            {{ form.project_client(class="form-control", id="m_project_client") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            {{ form.project_members(class="form-control", id="m_project_members") }}
+                        </div>
+                    </div>
                     <div class="form-group">
 
                         <div class="col-sm-9">
-                            {{ form.project_info(size=200,class="form-control", id="project_info") }}
+                            {{ form.project_info(size=200,class="form-control", placeholder="项目描述",id="m_project_info") }}
                         </div>
                     </div>
                 </form>
@@ -109,8 +152,14 @@
 
 {% block myFooterJSCSS %}
 {{ super() }}
+<script src="/static/js/socket.io.min.js"></script>
 <!-- bootstrap table -->
+<script src="/static/js/moment.min.js"></script>
+<script src="/static/js/moment-timezone.min.js"></script>
+<script src="/static/js/moment-timezone-with-data.min.js"></script>
+
 <script src="/static/bootstrap-table/src/bootstrap-table.js"></script>
 <script src="/static/bootstrap-table/src/locale/bootstrap-table-zh-CN.js"></script>
 <script src="/static/js/projectsInfo/table.projects.js"></script>
+<script src="/static/js/projectsInfo/table.projects.socket.js"></script>
 {% endblock %}

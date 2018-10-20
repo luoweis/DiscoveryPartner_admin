@@ -1,13 +1,15 @@
 #! /usr/bin/env python
 # -*- coding=utf-8 -*-
 
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from app.bpurls import projectsBP
 from flask_login import login_required
 from app.common.discoveryPartner_mysql_projects_utils import *
 from app.forms.projects_add import ProjectAddForm
 from app.common.util import *
-
+from flask_socketio import emit
+from app import socketio
+import time
 
 @projectsBP.route('/info',methods=['GET'])
 @login_required
@@ -41,9 +43,11 @@ def projects_show():
         return {
             "project_id": project.id,
             "project_name": project.name,
-            "project_status": project.status,
+            "project_status": project_life_cycle_content(project.status),
             "project_info": project.info,
             "project_create": project.create_datetime,
+            "project_client": project.client,
+            "project_members": project.members,
         }
 
     rows = list(map(format, projects))
@@ -64,7 +68,9 @@ def project_add():
     project = {
         "name": request.form.get("project_name"),
         "info": request.form.get("project_info"),
-        "status": 0
+        "status": request.form.get("project_status"),
+        "client": request.form.get("project_client"),
+        "members": request.form.get("project_members"),
     }
 
     add_project_single(**project)
@@ -79,10 +85,45 @@ def project_modify():
     :return:
     """
     project = {
+        "id": request.form.get("project_ID"),
         "name": request.form.get("project_name"),
         "info": request.form.get("project_info"),
-        "status": 0
+        "status": request.form.get("project_status"),
+        "client": request.form.get("project_client"),
+        "members": request.form.get("project_members"),
     }
 
-    add_project_single(**project)
+    modify_project(**project)
     return redirect(url_for("projectsBP.info"))
+
+
+@projectsBP.route('/get/project/', methods=['POST'])
+@login_required
+def get_project_by_id():
+    """
+    通过传递过来的id值提取数据
+    :return:
+    """
+    if request.method == "POST":
+        datas = eval(request.data)
+        project_id = datas.get("project_id")
+        project_info = find_project_by_id(project_id)
+    else:
+        return
+    return project_info
+
+
+@socketio.on('request_for_response', namespace='/deleteProjects')
+def give_response(data):
+    projects_info = data.get('projects')
+    if not projects_info:
+        return
+
+    projects = json.loads(projects_info)
+
+    while projects:
+        project = projects.pop()
+        # delete project from mysql by 'id'
+        delete_projects(project.get("project_id"))
+        emit('response', {'code': '200', 'msg': project.get("project_name")})
+        continue

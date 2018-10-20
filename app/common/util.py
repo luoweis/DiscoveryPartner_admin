@@ -5,6 +5,7 @@ from app.common.code import Code
 import json
 import datetime
 import hashlib
+from app.common.project_life_cycle import project_lift_cycle
 
 def return_result(data=None, code=Code.SUCCESS):
     """
@@ -34,6 +35,15 @@ def get_sex(num):
     return sex
 
 
+def project_life_cycle_content(num):
+    """
+    根据status中的状态值返回状态内容
+    :param num:
+    :return:
+    """
+
+    return project_lift_cycle.get(str(num))
+
 # 重写json类，遇到日期特殊处理
 # 解决json 日期格式报错"not JSON serializable"
 class DateEncoder(json.JSONEncoder):
@@ -57,3 +67,5 @@ def do_encryption(word, t='md5'):
         return hashlib.new(t, word).hexdigest()
     elif isinstance(word, str):
         return hashlib.new(t, word.encode(encoding="utf-8")).hexdigest()
+
+

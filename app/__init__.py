@@ -6,6 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from datetime import timedelta
 
+from flask_socketio import SocketIO
+
+
 app = Flask(__name__)
 
 # 设置静态文件缓存
@@ -18,6 +21,10 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
 app.config.update(RESTFUL_JSON=dict(ensure_ascii=False))
 app.config['JSON_AS_ASCII'] = False
 app.secret_key = os.urandom(32)
+
+
+
+socketio = SocketIO(app)
 
 login_manager = LoginManager()
 # 指定未登录时跳转的页面，即被拦截后跳转到我们定义的authBP/login的路由中

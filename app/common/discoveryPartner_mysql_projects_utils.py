@@ -2,6 +2,7 @@
 # -*- coding=utf-8 -*-
 from app.models.Projects import *
 from app import db
+from flask import jsonify
 
 
 def add_project_single(**kwargs):
@@ -24,6 +25,32 @@ def add_project_single(**kwargs):
         return {"msg": "添加成功"}
 
 
+def delete_projects(project_id):
+    """
+    删除数据
+    :param args:
+    :return:
+    """
+    try:
+        DiscoveryPartnerProjects.query.filter_by(id=project_id).delete()
+        db.session.commit()
+    except Exception as error:
+        return {"error_msg": error}
+    else:
+        return {
+            "msg": "删除成功",
+        }
+
+
+def modify_project(**kwargs):
+    project_id = kwargs.get('id')
+    kwargs.pop("id")
+    # print(kwargs)
+    DiscoveryPartnerProjects.query.filter_by(id=project_id).update(kwargs)
+    db.session.commit()
+    return
+
+
 def projects_onepage_datas(pageSize, offset):
     """
     获取单页数量的名单
@@ -42,3 +69,22 @@ def projects_total_count():
     """
     total = DiscoveryPartnerProjects.query.count()
     return total
+
+
+def find_project_by_id(project_id):
+    """
+    根据id值进行数据的查询
+    :param
+    :return:
+    """
+    project_info = DiscoveryPartnerProjects.query.filter_by(id=project_id).first()
+
+    return jsonify({
+        "project_id": project_info.id,
+        "project_name": project_info.name,
+        "project_info": project_info.info,
+        "project_status": project_info.status,
+        "project_client": project_info.client,
+        "project_members": project_info.members,
+        "project_image": project_info.image,
+    })
